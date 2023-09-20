@@ -1,6 +1,8 @@
 # solar-system
 solar system animation in python
 
+![solarsystem in python](./images//solarsystem.png)
+
 ## How to run
 ```
 python week14-solar-system.py
