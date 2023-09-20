@@ -21,6 +21,27 @@ class SolarSystem:
         for aplanet in self.planets:
             print(aplanet)
 
+    def freeze(self):
+        self.ssscreen.exitonclick()
+
+    def movePlanets(self):
+        G = .1
+        dt = .001
+
+        for p in self.planets:   
+           p.moveTo(p.getXPos() + dt * p.getXVel(), p.getYPos() + dt * p.getYVel())
+
+           rx = self.thesun.getXPos() - p.getXPos()
+           ry = self.thesun.getYPos() - p.getYPos()
+           r = math.sqrt(rx**2 + ry**2)
+
+           accx = G * self.thesun.getMass()*rx/r**3
+           accy = G * self.thesun.getMass()*ry/r**3
+
+           p.setXVel(p.getXVel() + dt * accx)
+
+           p.setYVel(p.getYVel() + dt * accy)
+
 class Sun:
    def __init__(self, iname, irad, im, itemp):
        self.name = iname
@@ -146,3 +167,36 @@ class Planet:
    def setYVel(self, newvy):
        self.vely = newvy
 
+
+def createSSandAnimate():
+   ss = SolarSystem(2,2)    
+
+   sun = Sun("SUN", 5000, 10, 5800)
+   ss.addSun(sun)
+
+
+   m = Planet("MERCURY", 19.5, 1000, .25, 0, 2, "blue")
+   ss.addPlanet(m)
+
+   m = Planet("EARTH", 47.5, 5000, 0.3, 0, 2.0, "green")
+   ss.addPlanet(m)
+
+   m = Planet("MARS", 50, 9000, 0.5, 0, 1.63, "red")
+   ss.addPlanet(m)
+
+   m = Planet("JUPITER", 100, 49000, 0.7, 0, 1, "black")
+   ss.addPlanet(m)
+
+   m = Planet("Pluto", 1, 500, 0.9, 0, .5, "orange")
+   ss.addPlanet(m)
+
+   m = Planet("Asteroid", 1, 500, 1.0, 0, .75, "cyan")
+   ss.addPlanet(m)
+
+   numTimePeriods = 20000
+   for amove in range(numTimePeriods):
+        ss.movePlanets()
+
+   ss.freeze()
+
+createSSandAnimate()
